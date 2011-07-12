@@ -1,5 +1,6 @@
 #!/bin/sh
-# @author: Matthew Story <matt@tablethotels.com>
+# @author: Matthew Story <matthewstory@gmail.com>
+# @license: BSD (see: LICENSE)
 # d2cdb -- loads file contents into cdb keyed on file name, recursively
 # -T  (default) forces use of the cdbmake program
 # -t forces use of tinycdb's cdb program (with -c)
