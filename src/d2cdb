@@ -1,0 +1,51 @@
+#!/bin/sh
+# @author: Matthew Story <matt@tablethotels.com>
+# d2cdb -- loads file contents into cdb keyed on file name, recursively
+# -T  (default) forces use of the cdbmake program
+# -t forces use of tinycdb's cdb program (with -c)
+# -M (default) uses path/to/filename as key
+# -m uses leaf directory as key, uses filenames for key ordering
+barf() { echo "fatal: $0: $*" >&2; exit 111; }
+safe() { "$@" || barf "cannot $*"; }
+usage() { echo "usage: $0 [-tTmM] dir cdb cdbtmp" >&2; exit 100; }
+
+cdbmake='cdbmake'
+tinycdb='cdb -c -t'
+cdb="$cdbmake"
+multi=0
+while getopts 'tTmM' opt 
+do
+    case "$opt" in 
+        t) cdb="$tinycdb"
+            ;;
+        T) cdb="$cdbmake"
+            ;;
+        m) multi=1
+            ;;
+        M) multi=0
+            ;;
+        *) usage 
+            ;;
+    esac
+done
+shift $((OPTIND - 1)) # drop opts
+
+# validation
+[ $# -lt 3 ] && usage
+dir="$1"
+cdbfile="$2" 
+cdbtmp="$3"
+if [ "$cdb" = "$tinycdb" ] 
+then
+    cdbfile="$3"
+    cdbtmp="$2"
+fi
+[ -d "$dir" ] || barf "$dir is not a directory"
+
+{ safe find "$dir" -type f | sed "s@^$dir/*@@" | while read f 
+do
+     key="$f"
+     [ 0 -lt $multi ] && key="${f%/*}"
+     safe printf "+%d,%d:%s->" "${#key}" "$(wc -c < "$dir/$f")" "$key" 
+     printf "\n" | safe cat "$dir/$f" -
+done; printf "\n"; } | safe $cdb "$cdbfile" "$cdbtmp"

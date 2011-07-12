@@ -1,0 +1,31 @@
+fifty-four is a 54lines.com compliance checker.
+
+usage: d2cdb [-tTmM] path/to/dir target_cdb tmp_cdb
+    
+    d2cdb takes a path/to/dir and recursively maps the file contents of the
+    directory into a cdb keyed on the relative path to the file (from root
+    path/to/dir).
+
+    d2cdb attempts to use the cdbmake program (http://cr.yp.to/cdb/cdbmake.html)
+    passing argv2 and argv3 unless the -t option is specified, in which case 
+    it uses tinycdb's 'cdb' program (http://www.corpit.ru/mjt/tinycdb.html) with
+    the -c option, passing argv3 to cdb's -t (tmp) option and argv2 as argv1.
+
+    When the -m option is passed, d2cdb will recursively map the file contents
+    of the directory into a cdb keyed on the relative leaf-directory path, using
+    the filename to order the leaf-directory key.
+
+Install: 
+
+    ./installer -p <prefix>
+
+    Will install d2cdb in <prefix>/bin (prefix defaults to /usr/local/).
+    
+Exit Codes:
+      0) success
+    100) improper usage
+    111) temporary failure (typically no cdbmake/cdb, or argv1 is not a dir)
+
+Dependencies:
+    + Bourne Shell (/bin/sh)
+    + cdbmake or cdb 
