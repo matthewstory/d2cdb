@@ -31,7 +31,7 @@ done
 shift $((OPTIND - 1)) # drop opts
 
 # validation
-[ $# -lt 3 ] && usage
+[ $# -ne 3 ] && usage
 dir="$1"
 cdbfile="$2" 
 cdbtmp="$3"
