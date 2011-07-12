@@ -1,4 +1,4 @@
-fifty-four is a 54lines.com compliance checker.
+d2cdb is a tool for building cdbs from file-system hierarchies.
 
 usage: d2cdb [-tTmM] path/to/dir target_cdb tmp_cdb
     
