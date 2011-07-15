@@ -6,7 +6,7 @@
 # -m uses leaf directory as key, uses filenames for key ordering
 barf() { echo "fatal: $0: $*" >&2; exit 111; }
 safe() { "$@" || barf "cannot $*"; }
-usage() { echo "usage: $0 [-tTmM] cdb cdbtmp dir [[dir]...]" >&2; exit 100; }
+usage() { echo "usage: $0 [-tm] cdb cdbtmp dir [[dir]...]" >&2; exit 100; }
 
 cdbmake='cdbmake'
 tinycdb='cdb -c -t'
