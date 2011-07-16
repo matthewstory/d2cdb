@@ -1,6 +1,6 @@
 d2cdb is a tool for building cdbs from file-system hierarchies.
 
-usage: d2cdb [-tm] cdb cdbtmp [[dir]...] 
+usage: d2cdb [-tm] cdb cdbtmp dir [[dir]...] 
     
     d2cdb takes n directories and recursively maps the file contents of the
     directory into a cdb keyed on the relative path to the file (from root
@@ -24,7 +24,7 @@ Install:
 Exit Codes:
       0) success
     100) improper usage
-    111) temporary failure (typically no cdbmake/cdb, or argv1 is not a dir)
+    111) temporary failure (typically no cdbmake/cdb, or argv3...n is not a dir)
 
 Dependencies:
     + Bourne Shell (/bin/sh)
