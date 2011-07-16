@@ -1,0 +1,45 @@
+#!/bin/sh
+# generic executable installer 
+# -p sets prefix
+barf()  { echo "$0: fatal: $*" >&2; exit 100; }
+safe()  { "$@" || barf "cannot $*"; }
+usage() { echo "$0 [-p prefix] [-s srcdir] [-m mode] [-o owner] [-g group]"; }
+owner="$(id -u)"
+group="$(id -g)"
+prefix=/usr/local
+srcdir=src/
+mode=555
+
+while true
+do
+    case "$1" in
+        -p) prefix="$2"
+            shift 2
+            ;;
+        -s) srcdir="$2"
+            shift 2
+            ;;
+        -m) mode="$2"
+            shift 2
+            ;;
+        -o) owner="$2"
+            shift 2
+            ;;
+        -g) group="$2"
+            shift 2
+            ;;
+        --) shift
+            break
+            ;;
+        -*) usage
+            ;;
+         *) break
+            ;;
+    esac
+done
+[ -d "$srcdir" ] || barf "no such directory $srcdir"
+bindir="$prefix/bin"
+[ -d "$bindir" ] || barf "no such directory $bindir"
+
+find "$srcdir" -depth 1 -type f | xargs -J % \
+    install -o "$owner" -g "$group" -m "0${mode}" % "$bindir"
