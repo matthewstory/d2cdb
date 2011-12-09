@@ -39,7 +39,7 @@ shift 2;
 { for dir in "$@"
 do 
     [ -d "$dir" ] || barf "$dir is not a directory"; 
-    safe find -L "$dir" -type f | sed "s@^$dir/*@@" | while read f 
+    safe find -L "$dir" -type f | sed "s@^$dir/*@@" | sort | while read f 
     do
          key="$f"
          [ 0 -lt $multi ] && key="${f%/*}"
