@@ -12,14 +12,14 @@ cdbmake='cdbmake'
 tinycdb='cdb -c -t'
 cdb="$cdbmake"
 multi=0
-while getopts 'tm' opt 
+while getopts 'tm' opt
 do
-    case "$opt" in 
+    case "$opt" in
         t) cdb="$tinycdb"
             ;;
         m) multi=1
             ;;
-        *) usage 
+        *) usage
             ;;
     esac
 done
@@ -27,9 +27,9 @@ shift $((OPTIND - 1)) # drop opts
 
 # validation
 [ $# -lt 3 ] && usage
-cdbfile="$1" 
+cdbfile="$1"
 cdbtmp="$2"
-if [ "$cdb" = "$tinycdb" ] 
+if [ "$cdb" = "$tinycdb" ]
 then
     cdbfile="$2"
     cdbtmp="$1"
@@ -37,9 +37,9 @@ fi
 shift 2;
 
 { for dir in "$@"
-do 
-    [ -d "$dir" ] || barf "$dir is not a directory"; 
-    safe find -L "$dir" -type f | sed "s@^$dir/*@@" | sort | while read f 
+do
+    [ -d "$dir" ] || barf "$dir is not a directory";
+    safe find -L "$dir" -type f | sed "s@^$dir/*@@" | sort | while read f
     do
          key="$f"
          [ 0 -lt $multi ] && key="${f%/*}"

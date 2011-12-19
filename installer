@@ -1,5 +1,5 @@
 #!/bin/sh
-# generic executable installer 
+# generic executable installer
 # -p sets prefix
 barf()  { echo "$0: fatal: $*" >&2; exit 100; }
 safe()  { "$@" || barf "cannot $*"; }
