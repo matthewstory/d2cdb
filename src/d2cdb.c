@@ -1,4 +1,4 @@
-/* @author: Jacob Yuan <jacob@tablethotels.com>
+/* @author: Jacob Yuan <jyuan0@gmail.com>
 
    Based on Matthew Story's d2cdb (Bourne shell) */
 
