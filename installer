@@ -1,17 +1,18 @@
 #!/bin/sh
-# generic executable installer 
-# -p sets prefix
-barf()  { echo "$0: fatal: $*" >&2; exit 100; }
+# d2cdb executable binary installer
+# modified from Matthew Story's generic executable installer
+# -p sets the prefix directory
+barf()  { echo "${0##*/}: fatal: $*" >&2; exit 100; }
 safe()  { "$@" || barf "cannot $*"; }
-usage() { echo "$0 [-p prefix] [-s srcdir] [-m mode] [-o owner] [-g group]"; }
+usage() { echo "${0##*/} [-p prefix] [-s srcdir] [-m mode] [-o owner] [-g group]"; }
 owner="$(id -u)"
 group="$(id -g)"
 prefix=/usr/local
 srcdir=src/
 mode=555
+target="d2cdb"
 
-while true
-do
+while true; do
     case "$1" in
         -p) prefix="$2"
             shift 2
@@ -37,9 +38,9 @@ do
             ;;
     esac
 done
-[ -d "$srcdir" ] || barf "no such directory $srcdir"
+[ -d "$srcdir" ] || barf "directory $srcdir does not exist"
 bindir="$prefix/bin"
-[ -d "$bindir" ] || barf "no such directory $bindir"
+[ -d "$bindir" ] || barf "directory $bindir does not exist"
 
-find "$srcdir" -depth 1 -type f | xargs -J % \
+find "$srcdir" -depth 1 -type f -name "$target" | xargs -J % \
     install -o "$owner" -g "$group" -m "0${mode}" % "$bindir"

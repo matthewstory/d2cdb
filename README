@@ -1,31 +1,48 @@
-d2cdb is a tool for building cdbs from file-system hierarchies.
+d2cdb is a tool for building cdbs from file system hierarchies.
 
-usage: d2cdb [-tm] cdb cdbtmp dir [[dir]...] 
-    
-    d2cdb takes n directories and recursively maps the file contents of the
-    directory into a cdb keyed on the relative path to the file (from root
+usage: d2cdb [-amorth] cdb_file tmp_file directory [directory ...]
+
+    a : include directory entries whose names begin with a dot (`.')
+    m : remove the file name from the cdb key
+    o : replace earlier cdb entries if the keys are identical
+    r : reverse the directory traversal order (implies `-o')
+    t : unused option for compatibility
+    h : show the help
+
+    d2cdb takes n directories and recursively maps the file contents of each
+    directory into a cdb keyed on the relative path to the file (from the root
     path/to/dir).
 
-    d2cdb attempts to use the cdbmake program (http://cr.yp.to/cdb/cdbmake.html)
-    passing argv1 and argv2 unless the -t option is specified, in which case 
-    it uses tinycdb's 'cdb' program (http://www.corpit.ru/mjt/tinycdb.html) with
-    the -c option, passing argv2 to cdb's -t (tmp) option and argv1 as argv1.
+    If the -m option is given, d2cdb will recursively map the file contents of
+    the directory into a cdb keyed on the relative leaf directory path, using
+    the filename to order the leaf directory key.
 
-    When the -m option is passed, d2cdb will recursively map the file contents
-    of the directory into a cdb keyed on the relative leaf-directory path, using
-    the filename to order the leaf-directory key.
+    If the -o option is given, d2cdb will override/replace earlier cdb entires
+    with later cdb entries if the keys are identical.
 
-Install: 
+Build:
+    A makefile is provided in the `src' directory which will build with the
+    following options:
 
-    ./installer -p <prefix>
+        gcc d2cdb.c -o d2cdb -Wall -O2 -std=c99 -I/usr/local/include -L/usr/local/lib -lcdb -g
 
-    Will install d2cdb in <prefix>/bin (prefix defaults to /usr/local/).
-    
+    To enable debug output, append `-DDEBUG' when building with gcc or use:
+
+        make CFLAGS="-g -DDEBUG"
+
+Install:
+    Moving the `d2cdb' binary to a directory in PATH suffices. One can also use
+    the installer provided, for example:
+
+        sudo ./installer -o root -g wheel # installs in /usr/local/bin
+
 Exit Codes:
       0) success
-    100) improper usage
-    111) temporary failure (typically no cdbmake/cdb, or argv3...n is not a dir)
+    100) error
 
 Dependencies:
-    + Bourne Shell (/bin/sh)
-    + cdbmake or cdb 
+    + TinyCDB 0.77: http://www.corpit.ru/mjt/tinycdb.html
+
+Tested with:
+    + FreeBSD 8.0
+    + gcc 4.2.1
