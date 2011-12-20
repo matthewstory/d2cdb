@@ -1,7 +1,6 @@
 d2cdb is a tool for building cdbs from file system hierarchies.
 
 usage: d2cdb [-amorth] cdb_file tmp_file directory [directory ...]
-
     a : include directory entries whose names begin with a dot (`.')
     m : remove the file name from the cdb key
     o : replace earlier cdb entries if the keys are identical
@@ -20,21 +19,20 @@ usage: d2cdb [-amorth] cdb_file tmp_file directory [directory ...]
     If the -o option is given, d2cdb will override/replace earlier cdb entires
     with later cdb entries if the keys are identical.
 
-Build:
-    A makefile is provided in the `src' directory which will build with the
-    following options:
+To build and install:
+    `make && sudo make install && make clean' in the `src' directory will build
+    and install with the following:
 
         gcc d2cdb.c -o d2cdb -Wall -O2 -std=c99 -I/usr/local/include -L/usr/local/lib -lcdb -g
+        install -o root -g wheel -m 0555 d2cdb /usr/local/bin
 
-    To enable debug output, append `-DDEBUG' when building with gcc or use:
+    gcc options may be given with `CFLAGS':
 
         make CFLAGS="-g -DDEBUG"
 
-Install:
-    Moving the `d2cdb' binary to a directory in PATH suffices. One can also use
-    the installer provided, for example:
+    install options may be given with `INSTALL_FLAGS':
 
-        sudo ./installer -o root -g wheel # installs in /usr/local/bin
+        sudo make INSTALL_FLAGS="-o root -g www -m 550" install
 
 Exit Codes:
       0) success
